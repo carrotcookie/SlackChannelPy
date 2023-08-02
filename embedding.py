@@ -24,6 +24,7 @@ load_dotenv()
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
 OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
+PERSIST_DIRECTORY = os.environ["PERSIST_DIRECTORY"]
 LOADER_MAPPING = {
     ".csv": (CSVLoader, {"encoding": "utf-8"}),
     ".doc": (UnstructuredWordDocumentLoader, {}),
@@ -73,7 +74,7 @@ def ingest_channel(channel_id, file_path, user_id = "youbin"):
 
     try:
         print(f"Create vectorstore at {user_id}/db")
-        persist_directory = f"{user_id}/db"
+        persist_directory = f"./{user_id}/{PERSIST_DIRECTORY}"
 
         db = Chroma(persist_directory = persist_directory, embedding_function = OpenAIEmbeddings(openai_api_key = OPENAI_API_KEY), collection_name = channel_id)
 
@@ -102,7 +103,7 @@ def delete_chroma(channel_id, ids, user_id = "youbin"):
     print("delete_chroma 실행 ---------------------------------------")
 
     try:
-        persist_directory = f"{user_id}/db"
+        persist_directory = f"./{user_id}/{PERSIST_DIRECTORY}"
 
         # 전달받은 id에 해당하는 임베딩 정보를 해당 컬렉션에서 삭제 후 적용
         vdb = Chroma(persist_directory = persist_directory, embedding_function = OpenAIEmbeddings(openai_api_key = OPENAI_API_KEY), collection_name = channel_id)
@@ -123,7 +124,7 @@ def check_db(channel_id, user_id = "youbin"):
     # 디버깅
     print("check_db 실행 ---------------------------------------")
 
-    persist_directory = f"{user_id}/db"
+    persist_directory = f"./{user_id}/{PERSIST_DIRECTORY}"
 
     db = Chroma(persist_directory = persist_directory, embedding_function = OpenAIEmbeddings(openai_api_key = OPENAI_API_KEY), collection_name = channel_id)
     collection = db.get()

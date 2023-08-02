@@ -1,4 +1,7 @@
 .venv/
+__pycache__/
+user001/
+cache/
 .env
 appCopy.py
-__pycache__/
+test.py

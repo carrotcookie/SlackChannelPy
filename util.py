@@ -56,7 +56,8 @@ def delete_channel_csv(channel_id, channel_name, user_id = "youbin"):
 
     try:
         os.remove(file_path)
-        print(f"File '{file_path}' has been deleted successfully.")
+        os.rmdir(f"./{user_id}/{channel_id}")
+        print(f"File has been deleted successfully.")
 
         return True
     
